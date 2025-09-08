@@ -35,10 +35,10 @@ endif()
 
 # 设置 PCL 路径
 set(PCL_DIR "${THIRDPARTY_DIR}/pcl/share/pcl-1.12")
-find_package(PCL 1.12 REQUIRED)
+find_package(PCL 1.12 REQUIRED COMPONENTS common io visualization)## 添加visualization
 message(STATUS "PCL_LIBRARIES: ${PCL_LIBRARIES}")
 
-# 设置 VTK 路径（优先尝试 3rdparty/vtk，若失败则使用系统 VTK 7.1）
+# 设置 VTK 路径（优先尝试 3rdparty/vtk）
 set(VTK_DIR "${THIRDPARTY_DIR}/vtk/lib/cmake/vtk-8.2")
 find_package(VTK REQUIRED)
 message(STATUS "VTK_DIR: ${VTK_DIR}")
@@ -64,14 +64,15 @@ link_directories(
 # 定义宏
 add_definitions(${PCL_DEFINITIONS})
 
+
 # 添加可执行文件
-add_executable(camera_test
+add_executable(realsenseRUN
     main.cpp
-    src/CameraRS.cpp
+    src/RealSenseCameraInterface.cpp
 )
 
 # 链接库
-target_link_libraries(camera_test
+target_link_libraries(realsenseRUN
     ${REALSENSE2_LIBRARY}
     ${OpenCV_LIBRARIES}
     ${PCL_LIBRARIES}
@@ -79,10 +80,9 @@ target_link_libraries(camera_test
     pthread
 )
 
-# 设置运行时路径
-set_target_properties(camera_test PROPERTIES
-    LINK_FLAGS "-Wl,-rpath,${THIRDPARTY_DIR}/vtk/lib:${THIRDPARTY_DIR}/pcl/lib:${THIRDPARTY_DIR}/camera_realsense/lib:/usr/lib/x86_64-linux-gnu"
+# 设置运行时 RPATH
+set_target_properties(realsenseRUN PROPERTIES
+        BUILD_WITH_INSTALL_RPATH TRUE
+        INSTALL_RPATH "${THIRDPARTY_DIR}/vtk/lib;${THIRDPARTY_DIR}/opencv/lib;${THIRDPARTY_DIR}/pcl/lib;${THIRDPARTY_DIR}/camera_realsense/lib"
+        INSTALL_RPATH_USE_LINK_PATH TRUE
 )
-
-# 安装目标
-install(TARGETS camera_test DESTINATION bin)

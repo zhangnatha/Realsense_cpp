@@ -14,7 +14,7 @@ echo "开始编译并安装 OpenCV ${OPENCV_VERSION} 到 ${INSTALL_DIR}"
 # 1. 安装依赖
 echo "安装必要的依赖..."
 sudo apt-get update && sudo apt-get upgrade -y
-sudo apt-get install -y git cmake build-essential libgtk-3-dev libavcodec-dev libavformat-dev libswscale-dev \
+sudo apt-get install -y git build-essential libgtk-3-dev libavcodec-dev libavformat-dev libswscale-dev \
     libjpeg-dev libpng-dev libtiff-dev zlib1g-dev python3-dev python3-numpy -y
 
 # 2. 下载 OpenCV 源码
@@ -58,7 +58,7 @@ make -j$(nproc)
 
 # 6. 安装 OpenCV
 echo "安装 OpenCV 到 ${INSTALL_DIR}..."
-sudo make install
+make install
 
 # 7. 验证安装
 echo "验证安装..."
@@ -72,8 +72,8 @@ fi
 # 8. 清除
 echo "清除..."
 cd ${SOURCE_DIR}
-rm -rf opencv_contrib-4.5.5
-rm -rf opencv-4.5.5
-rm -rf opencv_contrib-4.5.5.tar.gz
-rm -rf opencv-4.5.5.tar.gz
+rm -rf opencv_contrib-${OPENCV_VERSION}
+rm -rf opencv-${OPENCV_VERSION}
+rm -rf opencv_contrib-${OPENCV_VERSION}.tar.gz
+rm -rf opencv-${OPENCV_VERSION}.tar.gz
 echo "OpenCV ${OPENCV_VERSION} 已成功安装到 ${INSTALL_DIR}"

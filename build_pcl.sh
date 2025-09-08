@@ -15,7 +15,7 @@ echo "开始编译并安装 PCL ${PCL_VERSION} 到 ${INSTALL_DIR}"
 # 1. 安装依赖
 echo "安装必要的依赖..."
 sudo apt-get update && sudo apt-get upgrade -y
-sudo apt-get install -y git cmake build-essential libflann-dev libeigen3-dev libboost-all-dev libqhull-dev -y
+sudo apt-get install -y git build-essential libflann-dev libeigen3-dev libboost-all-dev libqhull-dev -y
 
 # 2. 检查 VTK 是否存在
 if [ ! -f "${VTK_DIR}/lib/cmake/vtk-8.2/VTKConfig.cmake" ]; then
@@ -40,18 +40,18 @@ cmake .. \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_SHARED_LIBS=ON \
     -DVTK_DIR="${VTK_DIR}/lib/cmake/vtk-8.2" \
-    -DBUILD_visualization=OFF \
+    -DBUILD_visualization=ON \
     -DBUILD_examples=OFF \
     -DBUILD_tools=OFF \
     -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}"
 
 # 5. 编译源码
 echo "编译 PCL..."
-make -j8
+make -j$(($(nproc) / 2))
 
 # 6. 安装 PCL
 echo "安装 PCL 到 ${INSTALL_DIR}..."
-sudo make install
+make install
 
 # 7. 验证安装
 echo "验证安装..."

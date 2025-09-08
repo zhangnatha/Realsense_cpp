@@ -1,0 +1,11 @@
+# 如果使用高带宽的USB设备，推荐设置128MB 或 256MB，系统内存8G以上，512，设置太高会影响系统内存
+echo 128 | sudo tee /sys/module/usbcore/parameters/usbfs_memory_mb
+
+sudo nano /etc/default/grub
+'''
+GRUB_CMDLINE_LINUX="usbcore.usbfs_memory_mb=256"
+'''
+sudo update-grub
+sudo reboot
+
+cat /sys/module/usbcore/parameters/usbfs_memory_mb

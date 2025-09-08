@@ -14,11 +14,11 @@ echo "开始编译并安装 VTK ${VTK_VERSION} 到 ${INSTALL_DIR}"
 # 1. 安装依赖
 echo "安装必要的依赖..."
 sudo apt-get update && sudo apt-get upgrade -y
-sudo apt-get install -y git cmake build-essential libgl1-mesa-dev libglu1-mesa-dev freeglut3-dev libxt-dev libxmu-dev libxi-dev libpng-dev libjpeg-dev zlib1g-dev -y
+sudo apt-get install -y git build-essential libgl1-mesa-dev libglu1-mesa-dev freeglut3-dev libxt-dev libxmu-dev libxi-dev libpng-dev libjpeg-dev zlib1g-dev -y
 
 # 2. 检查依赖是否安装
 echo "检查依赖..."
-for pkg in git cmake libgl1-mesa-dev libglu1-mesa-dev freeglut3-dev libxt-dev libxmu-dev libxi-dev libpng-dev libjpeg-dev zlib1g-dev; do
+for pkg in git libgl1-mesa-dev libglu1-mesa-dev freeglut3-dev libxt-dev libxmu-dev libxi-dev libpng-dev libjpeg-dev zlib1g-dev; do
     dpkg -l | grep -qw $pkg || { echo "依赖 $pkg 未安装！"; exit 1; }
 done
 
@@ -64,7 +64,7 @@ make -j$(nproc)
 
 # 6. 安装 VTK
 echo "安装 VTK 到 ${INSTALL_DIR}..."
-sudo make install
+make install
 
 # 7. 验证安装
 echo "验证安装..."

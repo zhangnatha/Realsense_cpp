@@ -16,13 +16,7 @@ echo "安装必要的依赖..."
 sudo apt-get update && sudo apt-get upgrade -y
 sudo apt-get install -y git build-essential -y
 
-# 2. 检查依赖是否安装
-echo "检查依赖..."
-for pkg in git cmake build-essential; do
-    dpkg -l | grep -qw $pkg || { echo "依赖 $pkg 未安装！"; exit 1; }
-done
-
-# 3. 下载 Eigen 源码
+# 2. 下载 Eigen 源码
 echo "下载 Eigen ${EIGEN_VERSION} 源码..."
 mkdir -p "${SOURCE_DIR}"
 cd "${SOURCE_DIR}"
@@ -32,22 +26,22 @@ if [ ! -d "eigen-${EIGEN_VERSION}" ]; then
 fi
 cd eigen-${EIGEN_VERSION}
 
-# 4. 清空旧构建目录
+# 3. 清空旧构建目录
 echo "清空旧构建目录..."
 rm -rf build
 mkdir -p build && cd build
 
-# 5. 配置编译环境
+# 4. 配置编译环境
 echo "配置 CMake..."
 cmake .. \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}"
 
-# 6. 安装 Eigen
+# 5. 安装 Eigen
 echo "安装 Eigen 到 ${INSTALL_DIR}..."
 make install
 
-# 7. 验证安装
+# 6. 验证安装
 echo "验证安装..."
 if [ -d "${INSTALL_DIR}/include/eigen3" ] && [ -f "${INSTALL_DIR}/include/eigen3/Eigen/Core" ]; then
     echo "安装成功！Eigen 头文件位于 ${INSTALL_DIR}/include/eigen3"
@@ -56,7 +50,7 @@ else
     exit 1
 fi
 
-# 8. 清除
+# 7. 清除
 echo "清除..."
 cd ${SOURCE_DIR}
 rm -rf eigen-${EIGEN_VERSION}.tar.gz
